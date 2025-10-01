@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batik Solo - Warisan Budaya dan Seni Membatik Khas Surakarta</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="hero-section">
+        <video autoplay loop muted playsinline id="bg-video">
+            <source src="img/video.mp4" type="video/mp4">
+            Mohon coba lagi untuk mendukung pemutaran video intro
+        </video>
+        <div class="video-overlay"></div>
+
+        <div class="hero-center-content">
+            <h1>Mahakarya Batik <span class="highlight">Solo</span></h1>
+            <p class="hero-subtitle">Menelusuri keindahan Batik Solo hasil karya budaya turun menurun khas Kota Surakarta</p>
+            <a href="#unggulan" class="cta-button">Motif Batik Solo</a>
+        </div>
+
+        <div class="hero-stats">
+            </div>
+
+        <a href="#navigasi" class="scroll-down-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </header>
+
+    <nav class="sticky-nav" id="navigasi">
+        <div class="nav-container">
+            <a href="#" class="nav-logo"><img src="img/logo.png" alt="Logo Batik Solo" class="nav-logo-img"></a>
+            <ul class="nav-menu">
+                <li><a href="#unggulan">Motif Kain</a></li>
+                <li><a href="#galeri">Galeri</a></li>
+                <li><a href="#daftar-lengkap">Proses</a></li>
+                <li><a href="#panduan">Panduan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section" id="unggulan">
+            <h2 class="section-title">Motif Khas <span class="highlight">Keraton Solo</span></h2>
+            <p class="section-subtitle">Setiap motif menyimpan makna mendalam dalam tiap ukirannya, temukan keindahan dalam motif Kota Solo yang Ikonik dan penuh filosofi.</p>
+            <div class="content-grid">
+                </div>
+        </section>
+
+        <section class="section" id="galeri">
+            <h2 class="section-title">Galeri <span class="highlight">Membatik</span></h2>
+            <div class="gallery-marquee">
+                <div class="gallery-scroll">
+                    </div>
+            </div>
+        </section>
+
+        <section class="section" id="daftar-lengkap">
+            <h2 class="section-title">Langkah - Langkah <span class="highlight">Proses Membatik</span></h2>
+            <p class="section-subtitle">Memahami proses panjang dan penuh kesabaran di balik sehelai mahakarya batik tulis yang otentik.</p>
+            <div class="steps-container">
+                </div>
+        </section>
+
+        <section class="section" id="panduan">
+            <h2 class="section-title">Panduan Merawat Batik <span class="highlight">Tulis</span></h2>
+            <p class="section-subtitle">Jaga keindahan dan keawetan mahakarya Anda dengan mengikuti tiga pilar perawatan batik tulis yang benar.</p>
+            <div class="guide-container">
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-main-content">
+            <div class="footer-left">
+                <h2>Tertarik Mempelajari <span class="highlight">Karya Seni</span> Ini?</h2>
+                <p>Hubungi kami untuk pemesanan, konsultasi motif, atau kunjungi galeri kami langsung di Solo.</p>
+                <div class="contact-list">
+                    <a href="#" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                        <span>@BatikSoloOfficial</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <i class="fab fa-tiktok"></i>
+                        <span>@BatikSolo.id</span>
+                    </a>
+                    <a href="tel:+6281234567890">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>0812-3456-7890</span>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-right">
+                <h4>Pemesanan & Pertanyaan</h4>
+                <p>Klik tombol di bawah untuk terhubung langsung dengan konsultan batik kami via WhatsApp.</p>
+                <a href="https://wa.me/6281234567890?text=Halo, saya tertarik dengan koleksi Batik Tulis Solo."
+                    target="_blank" class="cta-button">
+                    <i class="fab fa-whatsapp"></i> Hubungi Kami
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Batik Solo. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="motif-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <img id="modal-img" src="" alt="Motif Batik Detail">
+            <div class="modal-body">
+                <span id="modal-tag" class="card-tag"></span>
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>
