@@ -5,62 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { title: 'Warisan', text: 'Budaya turun menurun Kota Solo' }
     ];
 
-    const motifData = [
-        {
-            image: 'img/parang.jpg', tag: 'Kekuatan & Kekuasaan', title: 'Motif Parang',
-            description: 'Sebagai salah satu motif tertua, Parang melambangkan kekuasaan dan kekuatan. Pola diagonalnya menggambarkan perjuangan hidup yang tak pernah putus. Dulunya, motif ini hanya boleh dikenakan oleh raja.',
-            featured: true
-        },
-        {
-            image: 'img/kawung.jpg', tag: 'Kesucian & Umur Panjang', title: 'Motif Kawung',
-            description: 'Terinspirasi dari buah kolang-kaling, dengan motif geometris ini melambangkan kesucian hati, kebijaksanaan, dan harapan akan umur panjang bagi semua pengguna motif ini.'
-        },
-        {
-            image: 'img/truntum.jpg', tag: 'Cinta yang Bersemi', title: 'Motif Truntum',
-            description: 'Melambangkan cinta yang tulus dan bersemi kembali. Biasanya dikenakan oleh orang tua pada upacara pernikahan anak-anaknya.'
-        },
-        {
-            image: 'img/sogan.jpg', tag: 'Klasik Keraton', title: 'Motif Sogan',
-            description: 'Ciri khas batik keraton dengan warna kecoklatan dari pewarna alami, melambangkan kerendahan hati, kesederhanaan, dan sifat membumi.'
-        },
-        {
-            image: 'img/sidomukti.jpeg', tag: 'Kemakmuran & Kebahagiaan', title: 'Motif Sidomukti',
-            description: 'Sering digunakan dalam upacara pernikahan, melambangkan harapan akan kehidupan yang mulia, makmur, dan senantiasa berbahagia.'
-        },
-        {
-            image: 'img/sawat.jpg', tag: 'Perlindungan & Anugerah', title: 'Motif Sawat',
-            description: 'Memiliki ornamen utama berupa sayap (sawat) dari burung garuda, yang melambangkan anugerah dan perlindungan dari Yang Maha Kuasa.'
-        },
-        {
-            image: 'img/semen_rama.jpg', tag: 'Kehidupan & Kebijaksanaan', title: 'Motif Semen Rama',
-            description: 'Mengandung ajaran kepemimpinan Asthabrata dari wiracarita Ramayana, melambangkan kehidupan yang bijaksana dan mulia.'
-        },
-        {
-            image: 'img/sekar_jagad.jpg', tag: 'Keindahan & Keragaman', title: 'Motif Sekar Jagad',
-            description: 'Terdiri dari berbagai macam motif dalam satu kain, melambangkan keindahan dan keragaman dunia laksana sebuah peta (\'kar jagad\').'
-        },
-        {
-            image: 'img/motif_tambal.jpg', tag: 'Penyembuhan & Perbaikan', title: 'Motif Tambal',
-            description: 'Terdiri dari gabungan kain-kain perca, motif ini dipercaya memiliki kekuatan spiritual untuk \'menambal\' atau menyembuhkan orang sakit.'
-        },
-        {
-            image: 'img/cuwiri.jpg', tag: 'Penghormatan & Keselarasan', title: 'Motif Cuwiri',
-            description: 'Pola kecil-kecil yang melambangkan penghormatan. Diharapkan pemakainya terlihat pantas, dihormati, dan selaras dengan lingkungan.'
-        },
-        {
-            image: 'img/lereng.png', tag: 'Kesuburan & Harapan', title: 'Motif Lereng (Liris)',
-            description: 'Variasi dari motif parang dengan pola diagonal, melambangkan kesuburan, harapan, ketabahan, dan doa bagi pemakainya.'
-        },
-        {
-            image: 'img/bokor_kencana.jpeg', tag: 'Kemegahan & Keindahan', title: 'Motif Bokor Kencana',
-            description: 'Berasal dari wadah bokor emas yang indah, motif ini melambangkan kemegahan, keindahan, dan kemewahan yang abadi.'
-        },
-        {
-            image: 'img/sido_asih.jpg', tag: 'Kasih Sayang Abadi', title: 'Motif Sido Asih',
-            description: 'Melambangkan kasih sayang yang berkesinambungan dan abadi. Sering digunakan agar pengantin selalu diselimuti cinta kasih.'
-        },
-    ];
-
     const galleryData = [
         { src: 'img/membatik8.jpg', caption: 'Proses Mencanting' },
         { src: 'img/membatik7.jpg', caption: 'Proses Pewarnaan Alami' },
@@ -109,7 +53,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 { icon: 'fas fa-check-circle', title: 'Anginkan Secara Berkala', description: 'Keluarkan batik dari lemari setiap beberapa bulan sekali untuk diangin-anginkan agar tidak lembab.' }
             ]
         }
-    ];
+    ];  
+    
+    // API CALLS
+    async function getMotifData(){ 
+        try {
+            const res = await fetch('motif-data.json', {method: 'GET'});
+            return await res.json(); 
+        } catch (error) {
+            console.error(error.message);
+            return []; 
+        }
+    }
+
+    // END API CALLS
+
+    async function generateMotifCards() {
+        const container = document.querySelector('.content-grid');
+        const motifData = await getMotifData();
+        if (!container) return;
+        let html = '';
+
+        //  ID MOTIF MENYESUAIKAN INDEX OBJECT JSON
+        let index = 0;
+        motifData.forEach(motif => {
+            const featuredClass = motif.featured ? 'featured-card' : '';
+            html += `
+                <article class="content-card ${featuredClass}" id="${index}">
+                    <img src="${motif.image}" alt="Batik ${motif.title}" class="card-image">
+                    <div class="card-body">
+                        <span class="card-tag">${motif.tag}</span>
+                        <h3>${motif.title}</h3>
+                        <p class="card-description">${motif.description}</p>
+                    </div>
+                </article>
+            `;
+            index++;
+        });
+        container.innerHTML = html;
+
+        loadCardEventListener();
+    }
 
     function generateHeroStats() {
         const container = document.querySelector('.hero-stats');
@@ -121,26 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>${stat.title}</h3>
                     <p>${stat.text}</p>
                 </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function generateMotifCards() {
-        const container = document.querySelector('.content-grid');
-        if (!container) return;
-        let html = '';
-        motifData.forEach(motif => {
-            const featuredClass = motif.featured ? 'featured-card' : '';
-            html += `
-                <article class="content-card ${featuredClass}">
-                    <img src="${motif.image}" alt="Batik ${motif.title}" class="card-image">
-                    <div class="card-body">
-                        <span class="card-tag">${motif.tag}</span>
-                        <h3>${motif.title}</h3>
-                        <p class="card-description">${motif.description}</p>
-                    </div>
-                </article>
             `;
         });
         container.innerHTML = html;
@@ -216,48 +180,125 @@ document.addEventListener('DOMContentLoaded', () => {
     generateSteps();
     generateGuide();
 
-    const allMotifCards = document.querySelectorAll('.content-card');
-    const modalOverlay = document.getElementById('motif-modal');
-    const closeModalButton = document.querySelector('.modal-close');
+    let deleteToggle = false;
+    const delButton = document.querySelector('#delete');
+    delButton.addEventListener('click', () =>{
+        deleteToggle = !deleteToggle;
+        loadCardEventListener();
+    })
 
-    if (modalOverlay) {
-        const modalImage = document.getElementById('modal-img');
-        const modalTag = document.getElementById('modal-tag');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDescription = document.getElementById('modal-description');
-
-        const openModal = (card) => {
-            const imageSrc = card.querySelector('.card-image').src;
-            const tagText = card.querySelector('.card-tag').textContent;
-            const titleText = card.querySelector('h3').textContent;
-            const descriptionText = card.querySelector('.card-description').textContent;
-
-            modalImage.src = imageSrc;
-            modalTag.textContent = tagText;
-            modalTitle.textContent = titleText;
-            modalDescription.textContent = descriptionText;
-
-            modalOverlay.classList.remove('hidden');
-        };
-
-        const closeModal = () => {
-            modalOverlay.classList.add('hidden');
-        };
-
-        allMotifCards.forEach(card => {
-            card.addEventListener('click', (event) => {
-                event.preventDefault();
-                openModal(card);
-            });
-        });
-
-        closeModalButton.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', (event) => {
-            if (event.target === modalOverlay) closeModal();
-        });
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal();
-        });
+    let removeController;
+    let popUpController;
+    function loadCardEventListener(){
+        if (!deleteToggle){
+            if (removeController) removeController.abort();
+            const bottomBar = document.getElementById('delete-bar');
+            bottomBar.style.display = 'none';
+            cardPopup();
+        } 
+        else{
+            if (popUpController) popUpController.abort();
+            const bottomBar = document.getElementById('delete-bar');
+            bottomBar.style.display = 'block';
+            cardDeletion();
+        }
     }
 
+    function cardPopup(){
+        popUpController = new AbortController();
+        const allMotifCards = document.querySelectorAll('.content-card');
+        const modalOverlay = document.getElementById('motif-modal');
+        const closeModalButton = modalOverlay.querySelector('.modal-close');
+
+        if (modalOverlay) {
+            const modalImage = document.getElementById('modal-img');
+            const modalTag = document.getElementById('modal-tag');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+
+            const openModal = (card) => {
+                const imageSrc = card.querySelector('.card-image').src;
+                const tagText = card.querySelector('.card-tag').textContent;
+                const titleText = card.querySelector('h3').textContent;
+                const descriptionText = card.querySelector('.card-description').textContent;
+
+                modalImage.src = imageSrc;
+                modalTag.textContent = tagText;
+                modalTitle.textContent = titleText;
+                modalDescription.textContent = descriptionText;
+
+                modalOverlay.classList.remove('hidden');
+            };
+
+            const closeModal = () => {
+                modalOverlay.classList.add('hidden');
+            };
+
+            allMotifCards.forEach(card => {
+                card.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    if (!deleteToggle) openModal(card);
+                },
+                {signal: popUpController.signal}
+                );
+            });
+
+            closeModalButton.addEventListener('click', closeModal, {signal: popUpController.signal});
+            modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) closeModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal();
+            });
+        }
+    }
+
+    function cardDeletion(){
+        removeController = new AbortController();
+        const allMotifCards = document.querySelectorAll('.content-card');
+        const modalOverlay = document.getElementById('delete-modal');
+        const closeModalButton = modalOverlay.querySelector('.modal-close');
+        const confirmDelete = modalOverlay.querySelector('#confirm-delete');
+        const cancel = modalOverlay.querySelector('#cancel-delete');
+        let toDeleted;
+
+        if (modalOverlay) {
+            const openModal = () => {
+                modalOverlay.classList.remove('hidden');
+            };
+
+            const closeModal = () => {
+                modalOverlay.classList.add('hidden');
+            };
+        
+            allMotifCards.forEach(card => {
+                card.addEventListener('click', (event) => {
+                    toDeleted = card;
+                    console.log(toDeleted.id);
+                    event.preventDefault();
+                    if (deleteToggle) openModal();
+                },
+                {signal: removeController.signal}
+                );
+            });
+
+            confirmDelete.addEventListener('click', ()=> {
+                toDeleted.remove();
+                // BACKEND BELUM ADA
+                closeModal();
+            }, {signal: removeController.signal})
+
+            cancel.addEventListener('click', () =>{
+                closeModal();
+            }, {signal: removeController.signal})
+
+            closeModalButton.addEventListener('click', closeModal, {signal: removeController.signal});
+            modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) closeModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal();
+            });
+        }
+    }
 });
