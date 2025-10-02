@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+
 <body>
     <header class="hero-section">
         <video autoplay loop muted playsinline id="bg-video">
@@ -24,12 +25,13 @@
 
         <div class="hero-center-content">
             <h1>Mahakarya Batik <span class="highlight">Solo</span></h1>
-            <p class="hero-subtitle">Menelusuri keindahan Batik Solo hasil karya budaya turun menurun khas Kota Surakarta</p>
+            <p class="hero-subtitle">Menelusuri keindahan Batik Solo hasil karya budaya turun menurun khas Kota
+                Surakarta</p>
             <a href="#unggulan" class="cta-button">Motif Batik Solo</a>
         </div>
 
         <div class="hero-stats">
-            </div>
+        </div>
 
         <a href="#navigasi" class="scroll-down-indicator">
             <i class="fas fa-chevron-down"></i>
@@ -51,31 +53,52 @@
     <main>
         <section class="section" id="unggulan">
             <h2 class="section-title">Motif Khas <span class="highlight">Keraton Solo</span></h2>
-            <p class="section-subtitle">Setiap motif menyimpan makna mendalam dalam tiap ukirannya, temukan keindahan dalam motif Kota Solo yang Ikonik dan penuh filosofi.</p>
-            <div class="content-grid">
+            <p class="section-subtitle">Setiap motif menyimpan makna mendalam dalam tiap ukirannya, temukan keindahan
+                dalam motif Kota Solo yang Ikonik dan penuh filosofi.</p>
+            <div class="crud-buttons">
+                <div class="crud-button-container">
+                    <button id="delete">Hapus Pilihan</button>
                 </div>
+                <div class="crud-button-container">
+                    <button id="add">Tambah Motif</button>
+                </div>
+                <div class="crud-button-container">
+                    <div class="select-container">
+                        <select id="filter">
+                            <option value="option1" style="display: none">Filter</option>
+                            <option value="option2">Nama Motif A-Z</option>
+                            <option value="option3">Nama Motif Z-A</option>
+                            <option value="option3">Featured</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="content-grid">
+            </div>
         </section>
 
         <section class="section" id="galeri">
             <h2 class="section-title">Galeri <span class="highlight">Membatik</span></h2>
             <div class="gallery-marquee">
                 <div class="gallery-scroll">
-                    </div>
+                </div>
             </div>
         </section>
 
         <section class="section" id="daftar-lengkap">
             <h2 class="section-title">Langkah - Langkah <span class="highlight">Proses Membatik</span></h2>
-            <p class="section-subtitle">Memahami proses panjang dan penuh kesabaran di balik sehelai mahakarya batik tulis yang otentik.</p>
+            <p class="section-subtitle">Memahami proses panjang dan penuh kesabaran di balik sehelai mahakarya batik
+                tulis yang otentik.</p>
             <div class="steps-container">
-                </div>
+            </div>
         </section>
 
         <section class="section" id="panduan">
             <h2 class="section-title">Panduan Merawat Batik <span class="highlight">Tulis</span></h2>
-            <p class="section-subtitle">Jaga keindahan dan keawetan mahakarya Anda dengan mengikuti tiga pilar perawatan batik tulis yang benar.</p>
+            <p class="section-subtitle">Jaga keindahan dan keawetan mahakarya Anda dengan mengikuti tiga pilar perawatan
+                batik tulis yang benar.</p>
             <div class="guide-container">
-                </div>
+            </div>
         </section>
     </main>
 
@@ -123,6 +146,33 @@
                 <p id="modal-description"></p>
             </div>
         </div>
+    </div>
+
+    <div id="delete-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <h2>Konfirmasi Hapus</h2>
+                <p>Apakah Anda yakin ingin menghapus motif batik ini?</p>
+                <div class="delete-button-container">
+                    <button id="confirm-delete">Hapus</button>
+                    <button id="cancel-delete">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <h2>Tambahkan Motif Batik</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-bar">
+        <span>Klik motif batik yang ingin dihapus (Klik tombol Hapus Pilihan lagi untuk keluar)</span>
     </div>
 
     <script src="script.js"></script>
