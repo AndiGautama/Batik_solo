@@ -65,10 +65,10 @@
                 <div class="crud-button-container">
                     <div class="select-container">
                         <select id="filter">
-                            <option value="option1" style="display: none">Filter</option>
-                            <option value="option2">Nama Motif A-Z</option>
-                            <option value="option3">Nama Motif Z-A</option>
-                            <option value="option3">Featured</option>
+                            <option value="option0" style="display: none">Filter</option>
+                            <option value="aToZ">Nama Motif A-Z</option>
+                            <option value="zToA">Nama Motif Z-A</option>
+                            <option value="filterFeatured">Featured</option>
                         </select>
                     </div>
                 </div>
@@ -142,6 +142,9 @@
             <img id="modal-img" src="" alt="Motif Batik Detail">
             <div class="modal-body">
                 <span id="modal-tag" class="card-tag"></span>
+                <span id="bookmark-button">
+                    <button><i class="fas fa-light fa-star"></i></button>
+                </span>
                 <h2 id="modal-title"></h2>
                 <p id="modal-description"></p>
             </div>
@@ -165,8 +168,50 @@
     <div id="add-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button class="modal-close">&times;</button>
-            <div class="modal-body">
+            <div class="modal-body" id="add-modal-body">
                 <h2>Tambahkan Motif Batik</h2>
+                <div class="name-and-tag-container">
+                    <div class="add-form">
+                        <span>Nama Motif <br></span>
+                        <input type="text" name="Nama Motif" id="title-text-form"></input>
+                    </div>
+                    <div class="add-form">
+                        <span>Tag<br></span>
+                        <input type="text" name="Tag" id="tag-text-form"></input>
+                    </div>
+                </div>
+                <div class="add-form">
+                    <span>Deskripsi <br></span>
+                    <textarea name="Deskripsi" id="desc-text-form" rows=5></textarea>
+                </div>
+                <div class="image-and-is-featured-container">
+                    <div class="add-form">
+                        <span>Upload Gambar <br></span>
+                        <input type="file" name="Upload Gambar" id="upload-image-input" accept="image/*"></input>
+                    </div>
+                    <div class="add-form">
+                        <span>Featured <br></span>
+                        <div id="radio-wrapper">
+                            <input type="radio" name="isFeatured" id="featured-radio" value="yes"></input>
+                            <label for="featured">Ya</label>
+                            <span class="spacing"></span>
+                            <input type="radio" name="isFeatured" id="not-featured-radio" value="no"></input>
+                            <label for="not-featured">Tidak</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-submit-container">
+                    <button id="submit-add">Tambahkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bookmark-container" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body" id="add-modal-body">
+
             </div>
         </div>
     </div>
@@ -174,8 +219,7 @@
     <div id="delete-bar">
         <span>Klik motif batik yang ingin dihapus (Klik tombol Hapus Pilihan lagi untuk keluar)</span>
     </div>
-
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 
 
