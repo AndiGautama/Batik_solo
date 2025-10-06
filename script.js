@@ -1,60 +1,28 @@
+import {STATS_DATA, GALLERY_DATA, STEPS_DATA, GUIDE_DATA} from './constants.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    const statsData = [
-        { title: 'Motif', text: 'Beragam motif yang penuh makna' },
-        { title: 'Proses', text: 'Dari mencanting hingga menjadi kain' },
-        { title: 'Warisan', text: 'Budaya turun menurun Kota Solo' }
-    ];
+    const statsData = STATS_DATA;
+    const galleryData = GALLERY_DATA;
+    const stepsData = STEPS_DATA;
+    const guideData = GUIDE_DATA; 
 
-    const galleryData = [
-        { src: 'img/membatik8.jpg', caption: 'Proses Mencanting' },
-        { src: 'img/membatik7.jpg', caption: 'Proses Pewarnaan Alami' },
-        { src: 'img/membatik6.jpg', caption: 'Proses Lorod (Pelepasan Lilin)' },
-        { src: 'img/membatik5.jpg', caption: 'Kain Batik Siap Digunakan' },
-        { src: 'img/membatik3.jpg', caption: 'Proses Mencanting (Malam)' },
-        { src: 'img/membatik2.jpg', caption: 'Proses Pewarnaan Alami' },
-        { src: 'img/membatik.jpg', caption: 'Proses Lorod (Pelepasan Lilin)' },
-        { src: 'img/membatik 4.jpg', caption: 'Kain Batik Siap Digunakan' }
-    ];
+    let removeController;
+    let popUpController;
+    let addController;
 
-    const stepsData = [
-        { number: '01', icon: 'fas fa-scroll', title: 'Persiapan Kain (Mordanting)', description: 'Kain mori (katun atau sutra) dicuci dan direndam dalam larutan minyak nabati untuk menyiapkan serat kain agar dapat menyerap warna dengan sempurna.' },
-        { number: '02', icon: 'fas fa-pencil-ruler', title: 'Membuat Pola (Nyungging)', description: 'Pengrajin menggambar sketsa motif batik di atas kain menggunakan pensil. Pola ini menjadi panduan untuk proses selanjutnya.' },
-        { number: '03', icon: 'fas fa-fire', title: 'Mencanting (Melekatkan Lilin)', description: 'Menggunakan canting, pengrajin melukis di atas pola dengan lilin panas (malam). Area yang tertutup lilin akan menolak pewarna.' },
-        { number: '04', icon: 'fas fa-palette', title: 'Pewarnaan (Nyolet/Nembok)', description: 'Kain dicelup ke dalam larutan pewarna alami. Proses ini bisa diulang berkali-kali untuk mencapai kedalaman warna yang diinginkan.' },
-        { number: '05', icon: 'fas fa-water', title: 'Pelepasan Lilin (Nglorod)', description: 'Kain direbus dalam air panas untuk meluruhkan dan menghilangkan lapisan lilin, sehingga menampakkan motif asli yang berwarna putih.' },
-        { number: '06', icon: 'fas fa-check-double', title: 'Finishing & Pengeringan', description: 'Setelah lilin bersih, kain dicuci sekali lagi lalu diangin-anginkan di tempat teduh hingga kering. Kini, mahakarya batik siap digunakan.' }
-    ];
-
-    const guideData = [
-        {
-            icon: 'fas fa-tint', title: 'Pilar 1: Cara Mencuci',
-            description: 'Kesalahan dalam mencuci dapat merusak serat dan warna kain. Lakukan dengan lembut dan bahan yang tepat.',
-            points: [
-                { icon: 'fas fa-check-circle', title: 'Gunakan Lerak / Sampo', description: 'Hindari deterjen. Gunakan sari lerak atau sampo bayi yang lembut untuk menjaga warna.' },
-                { icon: 'fas fa-check-circle', title: 'Cuci dengan Tangan', description: 'Jangan gunakan mesin cuci. Cukup kucek perlahan dengan tangan di bagian yang kotor.' },
-                { icon: 'fas fa-check-circle', title: 'Jangan Diperas', description: 'Setelah dibilas, jangan memeras kain terlalu kencang agar serat kain tidak rusak.' }
-            ]
-        },
-        {
-            icon: 'fas fa-sun', title: 'Pilar 2: Penjemuran & Penyetrikaan',
-            description: 'Panas berlebih adalah musuh utama batik. Proses pengeringan dan setrika perlu perhatian khusus.',
-            points: [
-                { icon: 'fas fa-check-circle', title: 'Jemur di Tempat Teduh', description: 'Hindari sinar matahari langsung. Angin-anginkan di tempat yang teduh hingga kering.' },
-                { icon: 'fas fa-check-circle', title: 'Jangan Semprot Pewangi', description: 'Cairan pewangi atau pelembut bisa meninggalkan noda pada warna alami batik.' },
-                { icon: 'fas fa-check-circle', title: 'Lapisi Saat Menyetrika', description: 'Setrika dalam keadaan kain sedikit lembab, dan selalu lapisi dengan kain lain di atasnya.' }
-            ]
-        },
-        {
-            icon: 'fas fa-box-open', title: 'Pilar 3: Penyimpanan Terbaik',
-            description: 'Cara Anda menyimpan akan menentukan apakah batik akan awet atau justru rusak oleh jamur dan serangga.',
-            points: [
-                { icon: 'fas fa-check-circle', title: 'Gulung, Jangan Dilipat', description: 'Melipat kain akan meninggalkan bekas patahan. Sebaiknya gulung kain dengan rapi.' },
-                { icon: 'fas fa-check-circle', title: 'Gunakan Lada atau Cengkeh', description: 'Hindari kapur barus. Gunakan merica atau cengkeh dalam buntalan kain untuk mencegah serangga.' },
-                { icon: 'fas fa-check-circle', title: 'Anginkan Secara Berkala', description: 'Keluarkan batik dari lemari setiap beberapa bulan sekali untuk diangin-anginkan agar tidak lembab.' }
-            ]
-        }
-    ];  
+    let cardIndex = 0;
+    let motifDataStore = [];
     
+    async function initMotifData() {
+        motifDataStore = await getMotifData(); 
+        motifDataStore.forEach((motif, index) => motif.id = index); 
+        cardIndex = motifDataStore.length; 
+    }
+
+    initMotifData().then(() => {
+        generateMotifCards();
+    });
+
     // API CALLS
     async function getMotifData(){ 
         try {
@@ -67,19 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // END API CALLS
-
-    async function generateMotifCards() {
+    async function generateMotifCards(motifDataOverride = null) {
+        const motifData = motifDataOverride || motifDataStore; 
         const container = document.querySelector('.content-grid');
-        const motifData = await getMotifData();
         if (!container) return;
         let html = '';
-
+        cardIndex = 0;
         //  ID MOTIF MENYESUAIKAN INDEX OBJECT JSON
-        let index = 0;
         motifData.forEach(motif => {
             const featuredClass = motif.featured ? 'featured-card' : '';
             html += `
-                <article class="content-card ${featuredClass}" id="${index}">
+                <article id="${cardIndex}" class="content-card ${featuredClass}">
                     <img src="${motif.image}" alt="Batik ${motif.title}" class="card-image">
                     <div class="card-body">
                         <span class="card-tag">${motif.tag}</span>
@@ -88,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </article>
             `;
-            index++;
+            cardIndex++;
         });
         container.innerHTML = html;
 
@@ -174,21 +140,25 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = html;
     }
 
-    generateHeroStats();
-    generateMotifCards();
-    generateGallery();
-    generateSteps();
-    generateGuide();
+    // EVENT LISTENER
 
     let deleteToggle = false;
-    const delButton = document.querySelector('#delete');
+    const delButton = document.getElementById('delete');
     delButton.addEventListener('click', () =>{
         deleteToggle = !deleteToggle;
         loadCardEventListener();
     })
 
-    let removeController;
-    let popUpController;
+    const addButton = document.getElementById('add');
+    addButton.addEventListener('click', () =>{
+        addCardPopUp();
+    })
+
+    const filterSelection = document.getElementById('filter');
+    filterSelection.addEventListener('change', () =>{
+        filterCards(filterSelection.value);
+    })
+
     function loadCardEventListener(){
         if (!deleteToggle){
             if (removeController) removeController.abort();
@@ -283,7 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             confirmDelete.addEventListener('click', ()=> {
-                toDeleted.remove();
+                motifDataStore.splice(toDeleted.id, 1);
+                generateMotifCards();
                 // BACKEND BELUM ADA
                 closeModal();
             }, {signal: removeController.signal})
@@ -301,4 +272,94 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    function addCardPopUp(){
+        let image;
+        let description;
+        let title;
+        let tag;
+        let featured = false;
+        addController = new AbortController();
+        const modalOverlay = document.getElementById('add-modal');
+        const closeModalButton = modalOverlay.querySelector('.modal-close');
+
+        if (modalOverlay) {
+            modalOverlay.classList.remove('hidden');
+            const closeModal = () => {
+                modalOverlay.classList.add('hidden');
+            };
+            const featuredRadio = modalOverlay.querySelector('#featured-radio');
+            const notFeaturedRadio = modalOverlay.querySelector('#not-featured-radio');
+            const imageInput = modalOverlay.querySelector('#upload-image-input');
+            const titleInput = modalOverlay.querySelector('#title-text-form');
+            const descInput = modalOverlay.querySelector('#desc-text-form');
+            const tagInput = modalOverlay.querySelector('#tag-text-form');
+            notFeaturedRadio.checked =  true;
+
+            featuredRadio.addEventListener('change', () => featured = true, {signal: addController.signal});
+            notFeaturedRadio.addEventListener('change', () => featured = false, {signal: addController.signal});
+
+            imageInput.addEventListener('change', () =>{
+                if(imageInput.files.length === 1) image = imageInput.files[0];
+            });
+            imageInput.value ='';
+            
+            const submitBtn = modalOverlay.querySelector('#submit-add');
+            submitBtn.addEventListener('click', () =>{
+                title = titleInput.value;
+                description = descInput.value;
+                tag = tagInput.value;
+
+                if (title.trim() === 0 || description.trim() === 0 || 
+                    tag.trim() === 0 || imageInput.files.length === 0){
+                    return alert('Isi semua field tertera!');
+                }
+
+                const imageUrl = URL.createObjectURL(image);
+                const cardInfo = {
+                    "image" : imageUrl,
+                    "tag" : tag,
+                    "title" : title,
+                    "description" : description,
+                    "featured" : featured,
+                };
+                console.log(cardInfo);
+
+                motifDataStore.push(cardInfo);
+                generateMotifCards();
+                closeModal();
+            });
+       
+            closeModalButton.addEventListener('click', closeModal, {signal: addController.signal});
+            modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) closeModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal();
+            });
+        }
+    }
+
+    function filterCards(selection){
+        const container = document.querySelector('.content-grid');
+        if (!container) return;
+
+        let sortedData = [...motifDataStore];
+        if (selection === 'aToZ'){
+            sortedData.sort((a, b) => a.title.localeCompare(b.title));
+            generateMotifCards(sortedData);
+        } else if (selection === 'zToA'){
+            sortedData.sort((a, b) => b.title.localeCompare(a.title));
+            generateMotifCards(sortedData);
+        } else if (selection === 'filterFeatured'){
+            sortedData = sortedData.filter(motif => motif.featured);
+            generateMotifCards(sortedData);
+        }
+    }
+
+    generateHeroStats();
+    generateMotifCards();
+    generateGallery();
+    generateSteps();
+    generateGuide();
 });

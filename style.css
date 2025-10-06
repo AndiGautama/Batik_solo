@@ -249,7 +249,7 @@ body {
 
 .content-grid { 
     display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    grid-template-columns: repeat(3, minmax(280px, 1fr)); 
     justify-content: center;
     flex-wrap: wrap;
     gap: 30px; 
@@ -266,6 +266,11 @@ body {
     display: flex;
     flex-direction: column; 
 } 
+
+.content-card img{
+    line-height: 12rem;
+    text-align: center;
+}
 
 .content-card:hover { 
     transform: translateY(-10px); 
@@ -526,13 +531,15 @@ body {
     align-items: center;
     z-index: 2000;
     opacity: 1;
-    transition: opacity 0.3s ease;
     padding: 20px;
+    transition: opacity 0.3s ease;
 }
 
-.modal-overlay.hidden {
+.hidden {
     opacity: 0;
     pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
 }
 
 .modal-content {
@@ -694,8 +701,9 @@ footer {
     display: flex;
     flex-direction: row;
     gap: 3rem;
-    max-width: 500px;
-    margin: 0 auto 60px auto;;
+    width: 100%;;
+    margin: 0 auto 60px auto;
+    justify-content: center;
 }
 
 .crud-buttons button{
@@ -711,20 +719,28 @@ footer {
     cursor: pointer;
 }
 
-.delete-button-container{
+.delete-button-container, .add-submit-container {
     margin-top: 20px;
     display: flex;
     gap: 10px;
     justify-content: flex-end;
 }
 
-.delete-button-container button{
+.add-submit-container{
+    justify-content: center;
+}
+
+.delete-button-container button, #submit-add{
     padding: 8px 16px;
     background: red;
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
+}
+
+#submit-add{
+    background: green;
 }
 
 #cancel-delete{
@@ -748,6 +764,49 @@ footer {
     -moz-appearance: none;
 }
 
+.name-and-tag-container{
+    width: 100%;
+}
+
+#add-modal .name-and-tag-container, .image-and-is-featured-container{
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+#add-modal .name-and-tag-container .add-form, 
+.image-and-is-featured-container .add-form{
+    width: 50%;
+}
+
+#add-modal .name-and-tag-container .add-form input {
+    width: 100%;
+}
+
+#radio-wrapper{
+    display: block;
+}
+
+#radio-wrapper .spacing {
+    display: inline-block;
+    width: 2rem;
+}
+
+#desc-text-form{
+    width: 100%;
+    resize: none;
+}
+
+#bookmark-button{
+    margin-left: 1rem;
+}
+
+#bookmark-button button{
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: #fefefedd;
+}
 
 /* --- Media QuerIEes (Responsive) --- */
 @media (max-width: 768px) {
