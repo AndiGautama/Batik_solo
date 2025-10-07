@@ -1,4 +1,5 @@
 [{
+    "id": 1,
     "image": "img/parang.jpg",
     "tag": "Kekuatan & Kekuasaan",
     "title": "Parang",
@@ -6,72 +7,84 @@
     "featured": true
   },
   {
+    "id": 2,
     "image": "img/kawung.jpg",
     "tag": "Kesucian & Umur Panjang",
     "title": "Kawung",
     "description": "Terinspirasi dari buah kolang-kaling, dengan motif geometris ini melambangkan kesucian hati, kebijaksanaan, dan harapan akan umur panjang bagi semua pengguna motif ini."
   },
   {
+    "id": 3,
     "image": "img/truntum.jpg",
     "tag": "Cinta yang Bersemi",
     "title": "Truntum",
     "description": "Melambangkan cinta yang tulus dan bersemi kembali. Biasanya dikenakan oleh orang tua pada upacara pernikahan anak-anaknya."
   },
   {
+    "id": 4,
     "image": "img/sogan.jpg",
     "tag": "Klasik Keraton",
     "title": "Sogan",
     "description": "Ciri khas batik keraton dengan warna kecoklatan dari pewarna alami, melambangkan kerendahan hati, kesederhanaan, dan sifat membumi."
   },
   {
+    "id": 5,
     "image": "img/sidomukti.jpeg",
     "tag": "Kemakmuran & Kebahagiaan",
     "title": "Sidomukti",
     "description": "Sering digunakan dalam upacara pernikahan, melambangkan harapan akan kehidupan yang mulia, makmur, dan senantiasa berbahagia."
   },
   {
+    "id": 6,
     "image": "img/sawat.jpg",
     "tag": "Perlindungan & Anugerah",
     "title": "Sawat",
     "description": "Memiliki ornamen utama berupa sayap (sawat) dari burung garuda, yang melambangkan anugerah dan perlindungan dari Yang Maha Kuasa."
   },
   {
+    "id": 7,
     "image": "img/semen_rama.jpg",
     "tag": "Kehidupan & Kebijaksanaan",
     "title": "Semen Rama",
     "description": "Mengandung ajaran kepemimpinan Asthabrata dari wiracarita Ramayana, melambangkan kehidupan yang bijaksana dan mulia."
   },
   {
+    "id": 8,
     "image": "img/sekar_jagad.jpg",
     "tag": "Keindahan & Keragaman",
     "title": "Sekar Jagad",
     "description": "Terdiri dari berbagai macam motif dalam satu kain, melambangkan keindahan dan keragaman dunia laksana sebuah peta ('kar jagad')."
   },
   {
+    "id": 9,
     "image": "img/motif_tambal.jpg",
     "tag": "Penyembuhan & Perbaikan",
     "title": "Tambal",
     "description": "Terdiri dari gabungan kain-kain perca, motif ini dipercaya memiliki kekuatan spiritual untuk 'menambal' atau menyembuhkan orang sakit."
   },
   {
+    "id": 10,
     "image": "img/cuwiri.jpg",
     "tag": "Penghormatan & Keselarasan",
     "title": "Cuwiri",
     "description": "Pola kecil-kecil yang melambangkan penghormatan. Diharapkan pemakainya terlihat pantas, dihormati, dan selaras dengan lingkungan."
   },
   {
+    "id": 11,
     "image": "img/lereng.png",
     "tag": "Kesuburan & Harapan",
     "title": "Lereng (Liris)",
     "description": "Variasi dari motif parang dengan pola diagonal, melambangkan kesuburan, harapan, ketabahan, dan doa bagi pemakainya."
   },
   {
+    "id": 12,
     "image": "img/bokor_kencana.jpeg",
     "tag": "Kemegahan & Keindahan",
     "title": "Bokor Kencana",
     "description": "Berasal dari wadah bokor emas yang indah, motif ini melambangkan kemegahan, keindahan, dan kemewahan yang abadi."
   },
   {
+    "id": 13,
     "image": "img/sido_asih.jpg",
     "tag": "Kasih Sayang Abadi",
     "title": "Sido Asih",
