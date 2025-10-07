@@ -9,21 +9,36 @@ document.addEventListener('DOMContentLoaded', () => {
     let removeController;
     let popUpController;
     let addController;
+    let bookmarkController;
 
-    let cardIndex = 0;
-    let motifDataStore = [];
+    let motifDataArr = [];
+    let bookmarkArr = [];
     
     async function initMotifData() {
-        motifDataStore = await getMotifData(); 
-        motifDataStore.forEach((motif, index) => motif.id = index); 
-        cardIndex = motifDataStore.length; 
+        if (localStorage.getItem('motifLocalStorage') === null){
+            localStorage.setItem('motifLocalStorage', []);
+            motifDataArr = await getMotifData(); 
+            localStorage.setItem('motifLocalStorage', JSON.stringify(motifDataArr));
+        } else{
+            motifDataArr = JSON.parse(localStorage.getItem('motifLocalStorage'));
+        }
     }
 
     initMotifData().then(() => {
+        initBookmark();
         generateMotifCards();
     });
 
+    async function initBookmark(){
+        if (localStorage.getItem('bookmarkLocalStorage') === null){
+            localStorage.setItem('bookmarkLocalStorage', JSON.stringify(bookmarkArr));
+        } else{
+            bookmarkArr = JSON.parse(localStorage.getItem('bookmarkLocalStorage'));
+        }
+    }
+
     // API CALLS
+    // data awal di file json
     async function getMotifData(){ 
         try {
             const res = await fetch('motif-data.json', {method: 'GET'});
@@ -35,17 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // END API CALLS
+
+    let currCardId = 0;
     async function generateMotifCards(motifDataOverride = null) {
-        const motifData = motifDataOverride || motifDataStore; 
+        const motifData = motifDataOverride || motifDataArr; 
         const container = document.querySelector('.content-grid');
         if (!container) return;
         let html = '';
-        cardIndex = 0;
-        //  ID MOTIF MENYESUAIKAN INDEX OBJECT JSON
         motifData.forEach(motif => {
             const featuredClass = motif.featured ? 'featured-card' : '';
             html += `
-                <article id="${cardIndex}" class="content-card ${featuredClass}">
+                <article id="${motif.id}" class="content-card ${featuredClass}">
                     <img src="${motif.image}" alt="Batik ${motif.title}" class="card-image">
                     <div class="card-body">
                         <span class="card-tag">${motif.tag}</span>
@@ -54,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </article>
             `;
-            cardIndex++;
+            currCardId = motif.id;
         });
         container.innerHTML = html;
 
@@ -140,6 +155,38 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = html;
     }
 
+    function generateBookmarkList(){
+        const container = document.querySelector('#bookmark-list-container');
+        if (!container) return;
+        let html = '';
+
+        if (bookmarkArr.length === 0){ 
+            html = '<p>List bookmark Anda kosong!</p>';
+        }
+        else{
+            const bookmarkList = motifDataArr.filter(list => bookmarkArr.includes(list.id));
+            console.log(bookmarkList);
+            bookmarkList.forEach(list => {
+                html += `
+                <div class="bookmark-list-wrapper" id="book-${list.id}">
+                    <article class="bookmark-list" >
+                        <img src="${list.image}" alt="${list.title}">
+                        <button class="delete-bookmark-button">
+                            <span><i class="fas fa-trash"></i></span>
+                        </button>
+                        <div class="bookmark-list-body">
+                            <h3>${list.title}</h3>
+                            <p>${list.description}</p>
+                        </div>
+                    </article>
+                </div>
+                `
+            });
+        }
+
+        container.innerHTML = html;
+    }
+
     // EVENT LISTENER
 
     let deleteToggle = false;
@@ -151,7 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addButton = document.getElementById('add');
     addButton.addEventListener('click', () =>{
-        addCardPopUp();
+        addCard();
+    })
+
+    const bookmarkListButton = document.getElementById('bookmark');
+    bookmarkListButton.addEventListener('click', ()=>{
+        loadBookmark();
     })
 
     const filterSelection = document.getElementById('filter');
@@ -159,7 +211,37 @@ document.addEventListener('DOMContentLoaded', () => {
         filterCards(filterSelection.value);
     })
 
+    const clearData = document.getElementById('clear-data');
+    clearData.addEventListener('click', () =>{
+        const confirmClear = document.getElementById('confirm-clear-local-storage-modal');
+        if (!confirmClear) return;
+        confirmClear.classList.remove('hidden');
+
+        const confirmButton = confirmClear.querySelector('#confirm-clear-local-storage');;
+        confirmButton.addEventListener('click', () => {
+            localStorage.clear();
+            window.location.reload();
+        })
+   
+        const cancelButton = confirmClear.querySelector('#cancel-clear-local-storage');
+        cancelButton.addEventListener('click', () =>{
+            confirmClear.classList.add('hidden');
+        })
+    })
+
+    const searchBox = document.getElementById('motif-search');
+    searchBox.addEventListener('input', (e) =>{
+        console.log(e.target.value);
+        searchTitle(e.target.value);
+    })
+
+    function searchTitle(value){
+        const found = motifDataArr.filter((motif) => motif.title.includes(value.toUpperCase()));
+        generateMotifCards(found);
+    }
+
     function loadCardEventListener(){
+        console.log('ID sekarang', currCardId);
         if (!deleteToggle){
             if (removeController) removeController.abort();
             const bottomBar = document.getElementById('delete-bar');
@@ -170,60 +252,156 @@ document.addEventListener('DOMContentLoaded', () => {
             if (popUpController) popUpController.abort();
             const bottomBar = document.getElementById('delete-bar');
             bottomBar.style.display = 'block';
-            cardDeletion();
+            deleteCard();
         }
     }
 
-    function cardPopup(){
+     function cardPopup(idFromBookmark = null){
+        if (popUpController) popUpController.abort();
         popUpController = new AbortController();
         const allMotifCards = document.querySelectorAll('.content-card');
         const modalOverlay = document.getElementById('motif-modal');
         const closeModalButton = modalOverlay.querySelector('.modal-close');
+        const bookmarkButton = document.getElementById('bookmark-button');
+        const bookmarkSpan = document.getElementById('bookmark-button-span'); 
+        if(!modalOverlay) return;
 
-        if (modalOverlay) {
-            const modalImage = document.getElementById('modal-img');
-            const modalTag = document.getElementById('modal-tag');
-            const modalTitle = document.getElementById('modal-title');
-            const modalDescription = document.getElementById('modal-description');
+        const modalImage = document.getElementById('modal-img');
+        const modalTag = document.getElementById('modal-tag');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        let cardId;
 
-            const openModal = (card) => {
-                const imageSrc = card.querySelector('.card-image').src;
-                const tagText = card.querySelector('.card-tag').textContent;
-                const titleText = card.querySelector('h3').textContent;
-                const descriptionText = card.querySelector('.card-description').textContent;
+ 
 
-                modalImage.src = imageSrc;
-                modalTag.textContent = tagText;
-                modalTitle.textContent = titleText;
-                modalDescription.textContent = descriptionText;
+        const openModal = (card) => {
+            cardId = Number(card.id); 
+            if(idFromBookmark !== null){
+                bookmarkSpan.style.display = 'none';
+            } else{
+                bookmarkSpan.style.display = 'inline-block';
+            }
 
-                modalOverlay.classList.remove('hidden');
-            };
+            bookmarkButton.style.color = isBookmarked(cardId) ? 'yellow' : '#fefefedd';
+            
+            const imageSrc = card.querySelector('.card-image').src;
+            const tagText = card.querySelector('.card-tag').textContent;
+            const titleText = card.querySelector('h3').textContent;
+            const descriptionText = card.querySelector('.card-description').textContent;
 
-            const closeModal = () => {
-                modalOverlay.classList.add('hidden');
-            };
+            modalImage.src = imageSrc;
+            modalTag.textContent = tagText;
+            modalTitle.textContent = titleText;
+            modalDescription.textContent = descriptionText;
 
-            allMotifCards.forEach(card => {
-                card.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    if (!deleteToggle) openModal(card);
-                },
-                {signal: popUpController.signal}
-                );
-            });
+            modalOverlay.classList.remove('hidden');
+        };
 
-            closeModalButton.addEventListener('click', closeModal, {signal: popUpController.signal});
-            modalOverlay.addEventListener('click', (event) => {
-                if (event.target === modalOverlay) closeModal();
-            });
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal();
-            });
-        }
+        if (idFromBookmark !== null) {
+            const targetCard = document.getElementById(idFromBookmark);
+            console.log(targetCard);
+            if (targetCard) openModal(targetCard);
+        } 
+
+        bookmarkButton.addEventListener('click', () => {                
+            if (isBookmarked(cardId)){
+                removeBookmark(cardId);
+                bookmarkButton.style.color = '#fefefedd';
+                console.log('setelah hapus', bookmarkArr);
+            } else{
+                addToBookmark(cardId);
+                bookmarkButton.style.color = 'yellow';
+                console.log('setelah tambah', bookmarkArr);
+            }
+        }, {signal: popUpController.signal}); 
+
+        const closeModal = () => {
+            idFromBookmark = null;
+            modalOverlay.classList.add('hidden');
+        };
+
+        allMotifCards.forEach(card => {
+            card.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (!deleteToggle) openModal(card);
+            },
+            {signal: popUpController.signal}
+            );
+        });
+
+        closeModalButton.addEventListener('click', closeModal, {signal: popUpController.signal});
+        modalOverlay.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal();
+        });
     }
 
-    function cardDeletion(){
+    function isBookmarked(cardId){
+        const id = Number(cardId);
+        if (Number.isNaN(id)) return false;
+        const res = bookmarkArr.includes(id);
+        return res;
+    }
+
+    function addToBookmark(cardId){
+        const id = Number(cardId);
+        if (Number.isNaN(id)) return;
+        if(!bookmarkArr.includes(id)){
+            bookmarkArr.push(cardId);
+        } 
+        localStorage.setItem('bookmarkLocalStorage', JSON.stringify(bookmarkArr));
+    }
+
+    function removeBookmark(cardId){
+        const id = Number(cardId);
+        if (Number.isNaN(id)) return;
+        const deletedIndex = bookmarkArr.indexOf(id);
+        if (deletedIndex === -1) return;
+        bookmarkArr.splice(deletedIndex, 1);
+        localStorage.setItem('bookmarkLocalStorage', JSON.stringify(bookmarkArr));
+    }
+
+    function loadBookmark(){
+        if (bookmarkController) bookmarkController.abort();
+        bookmarkController = new AbortController();
+        const modalOverlay = document.getElementById('bookmark-container');
+        const closeModalButton = modalOverlay.querySelector('.modal-close');
+        if (!modalOverlay) return;
+       
+        modalOverlay.classList.remove('hidden');
+
+        generateBookmarkList();
+
+        const allBookmarksTitle = document.querySelectorAll('.bookmark-list-body h3');
+
+        const closeModal = () => {
+            modalOverlay.classList.add('hidden');
+        };
+
+        allBookmarksTitle.forEach(title => {
+            const wrapper = title.closest('.bookmark-list-wrapper');
+            const cardId = parseInt(wrapper.id.replace('book-', ''));
+            console.log('listener aktif untuk id', cardId);
+
+            title.addEventListener('click', () => {
+                cardPopup(parseInt(cardId));
+            }, { signal: bookmarkController.signal });
+        });
+
+        closeModalButton.addEventListener('click', closeModal, { signal: bookmarkController.signal });
+        modalOverlay.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal();
+        });
+        
+    }
+
+    function deleteCard(){
+        if (removeController) removeController.abort();
         removeController = new AbortController();
         const allMotifCards = document.querySelectorAll('.content-card');
         const modalOverlay = document.getElementById('delete-modal');
@@ -253,7 +431,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             confirmDelete.addEventListener('click', ()=> {
-                motifDataStore.splice(toDeleted.id, 1);
+                const toDeletedId = Number(toDeleted.id)
+                removeBookmark(toDeletedId);
+                const deletedIndex = motifDataArr.findIndex(motif => motif.id === toDeletedId);
+                motifDataArr.splice(deletedIndex, 1);
+                localStorage.setItem('motifLocalStorage', JSON.stringify(motifDataArr));
                 generateMotifCards();
                 // BACKEND BELUM ADA
                 closeModal();
@@ -273,12 +455,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function addCardPopUp(){
+    function addCard(){
         let image;
-        let description;
         let title;
         let tag;
-        let featured = false;
+        let description;
+        let isFeatured = false;
+        if (addController) addController.abort();
         addController = new AbortController();
         const modalOverlay = document.getElementById('add-modal');
         const closeModalButton = modalOverlay.querySelector('.modal-close');
@@ -296,13 +479,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const tagInput = modalOverlay.querySelector('#tag-text-form');
             notFeaturedRadio.checked =  true;
 
-            featuredRadio.addEventListener('change', () => featured = true, {signal: addController.signal});
-            notFeaturedRadio.addEventListener('change', () => featured = false, {signal: addController.signal});
+            featuredRadio.addEventListener('change', () => isFeatured = true, {signal: addController.signal});
+            notFeaturedRadio.addEventListener('change', () => isFeatured = false, {signal: addController.signal});
 
             imageInput.addEventListener('change', () =>{
                 if(imageInput.files.length === 1) image = imageInput.files[0];
             });
-            imageInput.value ='';
             
             const submitBtn = modalOverlay.querySelector('#submit-add');
             submitBtn.addEventListener('click', () =>{
@@ -315,20 +497,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     return alert('Isi semua field tertera!');
                 }
 
-                const imageUrl = URL.createObjectURL(image);
-                const cardInfo = {
-                    "image" : imageUrl,
-                    "tag" : tag,
-                    "title" : title,
-                    "description" : description,
-                    "featured" : featured,
-                };
-                console.log(cardInfo);
-
-                motifDataStore.push(cardInfo);
-                generateMotifCards();
-                closeModal();
-            });
+                const id = currCardId + 1;
+                if(addCardHelper(id, image, title, tag, description, isFeatured)) closeModal();
+                
+            }, { signal: addController.signal });
        
             closeModalButton.addEventListener('click', closeModal, {signal: addController.signal});
             modalOverlay.addEventListener('click', (event) => {
@@ -340,11 +512,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function addCardHelper(id, image, title, tag, description, isFeatured){
+        if(!image) return false;
+        const reader = new FileReader();
+        if (image){
+            // https://stackoverflow.com/questions/19183180/how-to-save-an-image-to-localstorage-and-display-it-on-the-next-page
+            reader.onload = (e) => {
+                const imageUrl = e.target.result;
+                const cardInfo = {
+                    "id": id,
+                    "image" : imageUrl,
+                    "tag" : tag,
+                    "title" : title,
+                    "description" : description,
+                    "featured" : isFeatured,
+                };
+                console.log(cardInfo);
+
+                motifDataArr.push(cardInfo);
+                localStorage.setItem('motifLocalStorage', JSON.stringify(motifDataArr));
+                generateMotifCards();
+            }
+            reader.readAsDataURL(image);
+            currCardId++;
+        }
+        return true;
+    }
+
     function filterCards(selection){
         const container = document.querySelector('.content-grid');
         if (!container) return;
 
-        let sortedData = [...motifDataStore];
+        let sortedData = [...motifDataArr];
         if (selection === 'aToZ'){
             sortedData.sort((a, b) => a.title.localeCompare(b.title));
             generateMotifCards(sortedData);

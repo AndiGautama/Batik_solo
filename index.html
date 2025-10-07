@@ -16,6 +16,9 @@
 </head>
 
 <body>
+    <!-- <div id="loading-screen" >
+        <span>Memuat</span>
+    </div> -->
     <header class="hero-section">
         <video autoplay loop muted playsinline id="bg-video">
             <source src="img/video.mp4" type="video/mp4">
@@ -63,6 +66,9 @@
                     <button id="add">Tambah Motif</button>
                 </div>
                 <div class="crud-button-container">
+                    <button id="bookmark">Bookmark</button>
+                </div>
+                <div class="crud-button-container">
                     <div class="select-container">
                         <select id="filter">
                             <option value="option0" style="display: none">Filter</option>
@@ -72,8 +78,12 @@
                         </select>
                     </div>
                 </div>
+                <input type="text" name="search" id="motif-search" placeholder="Cara nama motif">
             </div>
             <div class="content-grid">
+            </div>
+            <div id="clear-data">
+                <button>Clear Data</button>
             </div>
         </section>
 
@@ -142,8 +152,8 @@
             <img id="modal-img" src="" alt="Motif Batik Detail">
             <div class="modal-body">
                 <span id="modal-tag" class="card-tag"></span>
-                <span id="bookmark-button">
-                    <button><i class="fas fa-light fa-star"></i></button>
+                <span id="bookmark-button-span">
+                    <button id="bookmark-button"><i class="fas fa-light fa-star"></i></button>
                 </span>
                 <h2 id="modal-title"></h2>
                 <p id="modal-description"></p>
@@ -186,7 +196,7 @@
                 </div>
                 <div class="image-and-is-featured-container">
                     <div class="add-form">
-                        <span>Upload Gambar <br></span>
+                        <label for="upload-image-input"><span>Upload Gambar <br></span></label>
                         <input type="file" name="Upload Gambar" id="upload-image-input" accept="image/*"></input>
                     </div>
                     <div class="add-form">
@@ -208,10 +218,44 @@
     </div>
 
     <div id="bookmark-container" class="modal-overlay hidden">
+        <div class="modal-content" id="bookmark-modal-content">
+            <button class="modal-close">&times;</button>
+            <button id="clear-bookmark">Hapus Semua</button>
+            <div class="modal-body" id="bookmark-modal-body">
+                <h2>Bookmark Saya</h2>
+                <div id="bookmark-list-container">
+                    <div class="bookmark-list-wrapper">
+                        <article class="bookmark-list">
+                            <img src="img/bokor_kencana.jpeg" alt="">
+                            <button class="delete-bookmark-button">
+                                <span><i class="fas fa-trash"></i></span>
+                            </button>
+                            <div class="bookmark-list-body">
+                                <h3>Ini adalah Judul</h3>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est architecto placeat
+                                    perspiciatis
+                                    exercitationem maiores, quasi nesciunt accusamus harum quis recusandae. Nihil
+                                    perferendis
+                                    praesentium dicta quod consequuntur! Aperiam magnam quas temporibus.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-clear-local-storage-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button class="modal-close">&times;</button>
-            <div class="modal-body" id="add-modal-body">
-
+            <div class="modal-body">
+                <h2>Konfirmasi</h2>
+                <p>Tindakkan ini akan menghapus semua data yang telah diinput, baik itu bookmark maupun motif tambahan.
+                    Lanjutkan?</p>
+                <div class="delete-button-container">
+                    <button id="confirm-clear-local-storage">Clear Data</button>
+                    <button id="cancel-clear-local-storage">Batal</button>
+                </div>
             </div>
         </div>
     </div>
