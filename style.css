@@ -110,27 +110,31 @@ body {
     animation: fadeInUp 1s ease-out;
 }
 
-.cta-button , .crud-button-container button, .select-container, #clear-data button { 
+.cta-button , .crud-button-container button, .select-container, #load-more-wrapper button{ 
     background-color: var(--accent-color); 
     color: var(--light-text); 
     padding: 15px 35px; 
     text-decoration: none; 
-    font-weight: 700; 
-    border-radius: 8px; 
+    font-weight: 600; 
+    border-radius: 32px; 
     transition: all 0.3s ease; 
     display: inline-block; 
+    font-size: 1rem;
+    padding: 12px 18px;
+    border-style: none;
 }   
 
 .select-container select{
     appearance: none;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1rem;    
     background-color: transparent;
     border: 0;
     cursor: pointer;
 }
 
-.cta-button:hover , .crud-button-container button:hover{ 
+.cta-button:hover , .crud-button-container button:hover, 
+#load-more-wrapper button:hover{ 
     background-color: var(--text-color);
     color: var(--primary-bg); 
     transform: translateY(-3px); 
@@ -619,13 +623,6 @@ body {
     z-index: 2100;
 }
 
-#clear-data{
-    display: block;
-    width: 50%;
-    margin-left: auto;
-    padding-top: 2rem;
-}
-
 footer {
     background-color: var(--primary-bg); 
     padding: 60px 20px 0 20px; 
@@ -739,16 +736,6 @@ footer {
 .crud-buttons button, #clear-data button{
     color: var(--primary-bg);
     background-color: var(--accent-color);
-    font-size: 1rem;
-    padding: 12px 18px;
-    border-radius: 32px;
-    border-style: none;
-}
-
-#clear-data button{
-    background-color:#7c1111;
-    color: var(--light-text);
-    padding: 1rem 2rem;
 }
 
 .crud-buttons button:hover,
@@ -803,6 +790,23 @@ footer {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+}
+
+#clear-data {
+    background-color: #7c1111;
+    color: var(--light-text);
+}
+
+#unggulan-bottom-page-notif{
+    display: none;
+}
+
+.unggulan-bottom-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
 }
 
 .name-and-tag-container{

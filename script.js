@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let popUpController;
     let addController;
     let bookmarkController;
+    let page = 1;
 
     let motifDataArr = [];
     let bookmarkArr = [];
@@ -57,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.querySelector('.content-grid');
         if (!container) return;
         let html = '';
-        motifData.forEach(motif => {
+        const limit = motifData.slice(0, 6 * page);
+        limit.forEach(motif => {
             const featuredClass = motif.featured ? 'featured-card' : '';
             html += `
                 <article id="${motif.id}" class="content-card ${featuredClass}">
@@ -213,6 +215,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const clearData = document.getElementById('clear-data');
     clearData.addEventListener('click', () =>{
+        clearDataPopUp();
+    })
+
+    const searchBox = document.getElementById('motif-search');
+    searchBox.addEventListener('input', (e) =>{
+        console.log(e.target.value);
+        searchTitle(e.target.value);
+    })
+
+    const loadMoreButton = document.getElementById('load-more-button');
+    loadMoreButton.addEventListener('click', ()=>{
+        page++;
+        generateMotifCards();
+        toggleLoadMoreDisplay();
+    })
+
+    function toggleLoadMoreDisplay(){
+        const text = document.getElementById('unggulan-bottom-page-notif');
+        const limit = page * 6;
+        if (limit >= motifDataArr.length){
+            loadMoreButton.style.display = 'none';
+            text.style.display = 'flex';
+        } else{
+            loadMoreButton.style.display = 'flex';
+            text.style.display = 'none';
+        }
+    }
+
+    function searchTitle(value){
+        const found = motifDataArr.filter((motif) => motif.title.includes(value.toUpperCase()));
+        generateMotifCards(found);
+    }
+
+    function loadCardEventListener(){
+        console.log('ID sekarang', currCardId);
+        if (!deleteToggle){
+            if (removeController) removeController.abort();
+            const bottomBar = document.getElementById('delete-bar');
+            bottomBar.style.display = 'none';
+            cardPopup();
+        } 
+        else{
+            if (popUpController) popUpController.abort();
+            const bottomBar = document.getElementById('delete-bar');
+            bottomBar.style.display = 'block';
+            deleteCard();
+        }
+    }
+
+    function clearDataPopUp(){
         const confirmClear = document.getElementById('confirm-clear-local-storage-modal');
         const closeModalButton = confirmClear.querySelector('.modal-close');
         if (!confirmClear) return;
@@ -240,33 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && !confirmClear.classList.contains('hidden')) closeModal();
         });
-    })
-
-    const searchBox = document.getElementById('motif-search');
-    searchBox.addEventListener('input', (e) =>{
-        console.log(e.target.value);
-        searchTitle(e.target.value);
-    })
-
-    function searchTitle(value){
-        const found = motifDataArr.filter((motif) => motif.title.includes(value.toUpperCase()));
-        generateMotifCards(found);
-    }
-
-    function loadCardEventListener(){
-        console.log('ID sekarang', currCardId);
-        if (!deleteToggle){
-            if (removeController) removeController.abort();
-            const bottomBar = document.getElementById('delete-bar');
-            bottomBar.style.display = 'none';
-            cardPopup();
-        } 
-        else{
-            if (popUpController) popUpController.abort();
-            const bottomBar = document.getElementById('delete-bar');
-            bottomBar.style.display = 'block';
-            deleteCard();
-        }
     }
 
      function cardPopup(idFromBookmark = null){
