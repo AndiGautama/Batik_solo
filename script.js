@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let addController;
     let bookmarkController;
     let page = 1;
+    let limitLength;
 
     let motifDataArr = [];
     let bookmarkArr = [];
@@ -59,6 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
         let html = '';
         const limit = motifData.slice(0, 6 * page);
+        limitLength = limit.length;
+        console.log('limit di generate', limitLength);
+        console.log('halaman', page);
         limit.forEach(motif => {
             const featuredClass = motif.featured ? 'featured-card' : '';
             html += `
@@ -75,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         container.innerHTML = html;
 
+        toggleLoadMoreDisplay();
         loadCardEventListener();
     }
 
@@ -234,7 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleLoadMoreDisplay(){
         const text = document.getElementById('unggulan-bottom-page-notif');
         const limit = page * 6;
-        if (limit >= motifDataArr.length){
+        console.log(limitLength);
+        console.log(limit);
+        if (limit > limitLength){
             loadMoreButton.style.display = 'none';
             text.style.display = 'flex';
         } else{
