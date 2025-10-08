@@ -222,7 +222,6 @@ select#filter option {
     animation: bounce 2s infinite;
 }
 
-/* --- Animasi --- */
 @keyframes bounce { 
     0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 
     40% { transform: translateY(-15px); } 
@@ -438,7 +437,6 @@ select#filter option {
     background-color: var(--primary-bg);
 }
 
-/* --- Proses Membatik --- */
 #daftar-lengkap { 
     background-color: var(--primary-bg); 
 }
@@ -511,7 +509,6 @@ select#filter option {
     line-height: 1.6;
 }
 
-/* --- Panduan Merawat --- */
 .guide-container { 
     max-width: 900px; 
     margin: 0 auto; 
@@ -587,7 +584,6 @@ select#filter option {
     border-left: 2px solid var(--border-color); 
 } 
 
-/* --- Gaya Modal/Popup --- */
 .modal-overlay {
     position: fixed;
     top: 0;

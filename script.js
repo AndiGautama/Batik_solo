@@ -16,14 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let motifDataArr = [];
     let bookmarkArr = [];
 
-    window.onload = function() {
-        const loadingScreen = document.getElementById('loading-screen');
-    if(loadingScreen) {
-        loadingScreen.classList.add('hidden');
+        window.onload = function() {
+            const loadingScreen = document.getElementById('loading-screen');
+        if(loadingScreen) {
+            loadingScreen.classList.add('hidden');
     }
-};
-    document.addEventListener('DOMContentLoaded', () => {
-});
+    };
+        document.addEventListener('DOMContentLoaded', () => {
+    });
     
     async function initMotifData() {
         if (localStorage.getItem('motifLocalStorage') === null){
@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // EVENT LISTENER
-
     let deleteToggle = false;
     const delButton = document.getElementById('delete');
     delButton.addEventListener('click', () =>{
@@ -453,7 +452,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearAll.addEventListener('click', ()=>{
             bookmarkArr = [];
             localStorage.setItem('bookmarkLocalStorage', []);
-            // reload
             generateBookmarkList();
         })
 
