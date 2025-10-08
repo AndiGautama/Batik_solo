@@ -199,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = html;
     }
 
-    // EVENT LISTENER
     let deleteToggle = false;
     const delButton = document.getElementById('delete');
     delButton.addEventListener('click', () =>{
