@@ -736,7 +736,7 @@ footer {
     justify-content: center;
 }
 
-.crud-buttons button{
+.crud-buttons button, #clear-data button{
     color: var(--primary-bg);
     background-color: var(--accent-color);
     font-size: 1rem;
@@ -745,7 +745,14 @@ footer {
     border-style: none;
 }
 
-.crud-buttons button:hover{
+#clear-data button{
+    background-color:#7c1111;
+    color: var(--light-text);
+    padding: 1rem 2rem;
+}
+
+.crud-buttons button:hover,
+#clear-data button:hover{
     cursor: pointer;
 }
 
@@ -760,7 +767,7 @@ footer {
     justify-content: center;
 }
 
-.delete-button-container button, #submit-add{
+.delete-button-container button, #submit-add, #clear-bookmark{
     padding: 8px 16px;
     background: red;
     color: white;
@@ -865,7 +872,7 @@ footer {
 
 #clear-bookmark {
     position: absolute;
-    top: 1.55rem;
+    top: 1.2rem;
     right: 4rem;
 }
 
