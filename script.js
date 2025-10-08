@@ -244,7 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function searchTitle(value){
-        const found = motifDataArr.filter((motif) => motif.title.includes(value.toUpperCase()));
+        const found = motifDataArr.filter((motif) => 
+            motif.title.toUpperCase().includes(value.toUpperCase()));
         generateMotifCards(found);
     }
 
