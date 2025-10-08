@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let motifDataArr = [];
     let bookmarkArr = [];
+
+    window.onload = function() {
+        const loadingScreen = document.getElementById('loading-screen');
+    if(loadingScreen) {
+        loadingScreen.classList.add('hidden');
+    }
+};
+    document.addEventListener('DOMContentLoaded', () => {
+});
     
     async function initMotifData() {
         if (localStorage.getItem('motifLocalStorage') === null){
@@ -39,8 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // API CALLS
-    // data awal di file json
     async function getMotifData(){ 
         try {
             const res = await fetch('motif-data.json', {method: 'GET'});
@@ -50,8 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return []; 
         }
     }
-
-    // END API CALLS
 
     let currCardId = 0;
     async function generateMotifCards(motifDataOverride = null) {
@@ -499,7 +504,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 motifDataArr.splice(deletedIndex, 1);
                 localStorage.setItem('motifLocalStorage', JSON.stringify(motifDataArr));
                 generateMotifCards();
-                // BACKEND BELUM ADA
                 closeModal();
             }, {signal: removeController.signal})
 
