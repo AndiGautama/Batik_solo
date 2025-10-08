@@ -214,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearData = document.getElementById('clear-data');
     clearData.addEventListener('click', () =>{
         const confirmClear = document.getElementById('confirm-clear-local-storage-modal');
+        const closeModalButton = confirmClear.querySelector('.modal-close');
         if (!confirmClear) return;
         confirmClear.classList.remove('hidden');
 
@@ -222,11 +223,23 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.clear();
             window.location.reload();
         })
+
+        const closeModal = () =>{
+            confirmClear.classList.add('hidden');
+        }   
    
         const cancelButton = confirmClear.querySelector('#cancel-clear-local-storage');
         cancelButton.addEventListener('click', () =>{
-            confirmClear.classList.add('hidden');
+            closeModal();
         })
+
+        closeModalButton.addEventListener('click', closeModal);
+        confirmClear.addEventListener('click', (event) => {
+            if (event.target === confirmClear && !confirmClear.classList.contains('hidden')) closeModal();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !confirmClear.classList.contains('hidden')) closeModal();
+        });
     })
 
     const searchBox = document.getElementById('motif-search');
@@ -271,8 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
         let cardId;
-
- 
 
         const openModal = (card) => {
             cardId = Number(card.id); 
@@ -374,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         generateBookmarkList();
 
+        const removeButtons = document.querySelectorAll('.delete-bookmark-button');
         const allBookmarksTitle = document.querySelectorAll('.bookmark-list-body h3');
 
         const closeModal = () => {
@@ -383,12 +395,29 @@ document.addEventListener('DOMContentLoaded', () => {
         allBookmarksTitle.forEach(title => {
             const wrapper = title.closest('.bookmark-list-wrapper');
             const cardId = parseInt(wrapper.id.replace('book-', ''));
-            console.log('listener aktif untuk id', cardId);
 
             title.addEventListener('click', () => {
                 cardPopup(parseInt(cardId));
             }, { signal: bookmarkController.signal });
         });
+
+        removeButtons.forEach(btn =>{
+            btn.addEventListener('click', () =>{
+                const wrapper = btn.closest('.bookmark-list-wrapper');
+                const cardId = parseInt(wrapper.id.replace('book-', ''));
+
+                removeBookmark(parseInt(cardId));
+                generateBookmarkList();
+            }, {signal: bookmarkController.signal});
+        })
+
+        const clearAll = document.getElementById('clear-bookmark');
+        clearAll.addEventListener('click', ()=>{
+            bookmarkArr = [];
+            localStorage.setItem('bookmarkLocalStorage', []);
+            // reload
+            generateBookmarkList();
+        })
 
         closeModalButton.addEventListener('click', closeModal, { signal: bookmarkController.signal });
         modalOverlay.addEventListener('click', (event) => {
