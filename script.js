@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-     function cardPopup(idFromBookmark = null){
+    function cardPopup(idFromBookmark = null){
         if (popUpController) popUpController.abort();
         popUpController = new AbortController();
         const allMotifCards = document.querySelectorAll('.content-card');
@@ -421,31 +421,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         generateBookmarkList();
 
-        const removeButtons = document.querySelectorAll('.delete-bookmark-button');
-        const allBookmarksTitle = document.querySelectorAll('.bookmark-list-body h3');
-
         const closeModal = () => {
             modalOverlay.classList.add('hidden');
         };
 
-        allBookmarksTitle.forEach(title => {
-            const wrapper = title.closest('.bookmark-list-wrapper');
-            const cardId = parseInt(wrapper.id.replace('book-', ''));
+        const bookmarkContainer = document.getElementById('bookmark-list-container');
 
-            title.addEventListener('click', () => {
-                cardPopup(parseInt(cardId));
+        if (bookmarkContainer) {
+            bookmarkContainer.addEventListener('click', (e) => {
+                const deleteButton = e.target.closest('.delete-bookmark-button');
+                if (deleteButton) {
+                    const wrapper = deleteButton.closest('.bookmark-list-wrapper');
+                    const cardId = parseInt(wrapper.id.replace('book-', ''));
+                    
+                    removeBookmark(cardId);
+                    generateBookmarkList();
+                    return;
+                }
+
+                const title = e.target.closest('.bookmark-list-body h3');
+                if (title) {
+                    const wrapper = title.closest('.bookmark-list-wrapper');
+                    const cardId = parseInt(wrapper.id.replace('book-', ''));
+                    cardPopup(cardId);
+                }
             }, { signal: bookmarkController.signal });
-        });
-
-        removeButtons.forEach(btn =>{
-            btn.addEventListener('click', () =>{
-                const wrapper = btn.closest('.bookmark-list-wrapper');
-                const cardId = parseInt(wrapper.id.replace('book-', ''));
-
-                removeBookmark(parseInt(cardId));
-                generateBookmarkList();
-            }, {signal: bookmarkController.signal});
-        })
+        }
 
         const clearAll = document.getElementById('clear-bookmark');
         clearAll.addEventListener('click', ()=>{
