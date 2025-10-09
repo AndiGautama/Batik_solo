@@ -1,5 +1,14 @@
 import {STATS_DATA, GALLERY_DATA, STEPS_DATA, GUIDE_DATA} from './constants.js';
 
+window.onload = function() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if(loadingScreen) {
+        loadingScreen.classList.add('hidden');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const statsData = STATS_DATA;
     const galleryData = GALLERY_DATA;
@@ -15,15 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let motifDataArr = [];
     let bookmarkArr = [];
-
-        window.onload = function() {
-            const loadingScreen = document.getElementById('loading-screen');
-        if(loadingScreen) {
-            loadingScreen.classList.add('hidden');
-        }
-    };
-        document.addEventListener('DOMContentLoaded', () => {
-    });
     
     async function initMotifData() {
         if (localStorage.getItem('motifLocalStorage') === null){
@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function generateMotifCards(motifDataOverride = null) {
         const motifData = motifDataOverride || motifDataArr; 
         const container = document.querySelector('.content-grid');
+        currCardId = motifData.length;
         if (!container) return;
         let html = '';
         const limit = motifData.slice(0, 6 * page);
@@ -80,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </article>
             `;
-            currCardId = motif.id;
         });
         container.innerHTML = html;
 

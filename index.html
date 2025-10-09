@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
-<body>
+<body style=" background-color: #2d2424;">
     <div id="loading-screen">
         <div class="spinner"></div>
     </div>
@@ -69,6 +69,10 @@
                     <button id="bookmark">Bookmark</button>
                 </div>
                 <div class="crud-button-container">
+                    <button id="clear-data">Clear Data</button>
+                </div>
+                <input type="text" name="search" id="motif-search" placeholder="Cara nama motif">
+                <div class="crud-button-container">
                     <div class="select-container">
                         <select id="filter">
                             <option value="option0" style="display: none">Filter</option>
@@ -77,10 +81,6 @@
                             <option value="filterFeatured">Featured</option>
                         </select>
                     </div>
-                </div>
-                <input type="text" name="search" id="motif-search" placeholder="Cara nama motif">
-                <div class="crud-button-container">
-                    <button id="clear-data">Clear Data</button>
                 </div>
             </div>
             <div class="content-grid">
@@ -267,4 +267,5 @@
     </div>
     <script type="module" src="script.js"></script>
 </body>
+
 </html>
