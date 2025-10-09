@@ -139,7 +139,7 @@ body {
     border-radius: 32px; 
     transition: all 0.3s ease; 
     display: inline-block; 
-    font-size: 1rem;
+    font-size: clamp(0.5rem, 80%, 1rem);
     padding: 12px 18px;
     border-style: none;
 }   
@@ -331,6 +331,7 @@ select#filter option {
     transition: all 0.3s ease; 
     display: flex;
     flex-direction: column; 
+    text-align: justify;
 } 
 
 .content-card img{
@@ -767,10 +768,11 @@ footer {
 .crud-buttons{
     display: flex;
     flex-direction: row;
-    gap: 3rem;
-    width: 100%;;
+    gap: 2rem;
+    width: 90%;
     margin: 0 auto 60px auto;
     justify-content: center;
+    align-items: center;
 }
 #motif-search {
     background-color: var(--primary-bg); 
@@ -778,10 +780,9 @@ footer {
     border: 2px solid var(--accent-color);
     padding: 7px 12px;
     border-radius: 32px;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-family: var(--font-primary);
     transition: all 0.3s ease;
-    height: 40;
 }
 
 #motif-search::placeholder {
@@ -1013,6 +1014,33 @@ footer {
     max-height: 132px;
 }
 
+#clear-data {
+    font-size: clamp(0.5rem, 80%, 1rem);
+}
+
+@media (max-width: 1372px){
+    .crud-buttons{
+        gap: 0.6rem;
+    }
+}
+
+@media (max-width: 1248px){
+    .crud-buttons{
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1096px){
+    .content-grid{
+        width: 90%;
+        grid-template-columns: repeat(2, minmax(240px, 1fr));
+    }
+
+    .content-card{
+        font-size: 0.8rem
+    }
+}
+
 @media (max-width: 768px) {
     .hero-logo { max-width: 250px; }
     .hero-stats { flex-direction: column; gap: 20px; border-top: none; padding-top: 0; margin-top: 30px; }
@@ -1038,7 +1066,17 @@ footer {
     }
 }
 
+@media (max-width: 702px) {
+    .content-grid {
+        width: 70%;
+        grid-template-columns: repeat(1, minmax(240px, 1fr));
+    }
+}
+
 @media (max-width: 480px) {
+    .content-grid {
+        width: 90%;
+    }
     .hero-logo { max-width: 200px; }
     .hero-subtitle { font-size: 1rem; }
     .stat-item h3 { font-size: 1.8rem; }
