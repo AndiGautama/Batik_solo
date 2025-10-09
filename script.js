@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let motifDataArr = [];
     let bookmarkArr = [];
-    
+
     async function initMotifData() {
         if (localStorage.getItem('motifLocalStorage') === null){
             localStorage.setItem('motifLocalStorage', []);
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function generateMotifCards(motifDataOverride = null) {
         const motifData = motifDataOverride || motifDataArr; 
         const container = document.querySelector('.content-grid');
-        currCardId = motifData.length;
+        currCardId = motifDataArr.length > 0 ? Math.max(...motifDataArr.map(motif => motif.id)) + 1 : 1;
         if (!container) return;
         let html = '';
         const limit = motifData.slice(0, 6 * page);
@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const deletedIndex = motifDataArr.findIndex(motif => motif.id === toDeletedId);
                 motifDataArr.splice(deletedIndex, 1);
                 localStorage.setItem('motifLocalStorage', JSON.stringify(motifDataArr));
-                generateMotifCards();
+                generateMotifCards(motifDataArr);
                 closeModal();
             }, {signal: removeController.signal})
 
@@ -560,9 +560,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     return alert('Isi semua field tertera!');
                 }
 
-                const id = currCardId + 1;
+                const id = currCardId;
                 if(addCardHelper(id, image, title, tag, description, isFeatured)) closeModal();
-                
+                else alert('Semua field wajib diisi!');
             }, { signal: addController.signal });
        
             closeModalButton.addEventListener('click', closeModal, {signal: addController.signal});
@@ -594,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 motifDataArr.push(cardInfo);
                 localStorage.setItem('motifLocalStorage', JSON.stringify(motifDataArr));
-                generateMotifCards();
+                generateMotifCards(motifDataArr);
             }
             reader.readAsDataURL(image);
             currCardId++;
